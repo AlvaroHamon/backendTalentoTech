@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const ClienteSchema = mongoose.Schema({
 
@@ -32,6 +32,6 @@ const ClienteSchema = mongoose.Schema({
     type: String,
     require: true
   }
-}, { versionkey: false });
+}, { versionkey: false })
 
-module.exports = mongoose.model('Cliente', ClienteSchema);
+module.exports = mongoose.model('Cliente', ClienteSchema)

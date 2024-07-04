@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-require('dotenv').config();
+const mongoose = require('mongoose')
+require('dotenv').config()
 
 const ConectarBD = () => {
   mongoose
@@ -8,4 +8,4 @@ const ConectarBD = () => {
     .catch((e) => console.error(e))
 }
 
-module.exports = ConectarBD;
+module.exports = ConectarBD

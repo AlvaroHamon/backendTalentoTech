@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const ProveedorSchema = mongoose.Schema({
 
@@ -23,6 +23,6 @@ const ProveedorSchema = mongoose.Schema({
     type: String,
     require: true
   }
-}, { versionkey: false });
+}, { versionkey: false })
 
-module.exports = mongoose.model('Proveedor', ProveedorSchema);
+module.exports = mongoose.model('Proveedor', ProveedorSchema)

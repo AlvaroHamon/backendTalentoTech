@@ -2,11 +2,11 @@ const Proveedor = require('../models/Proveedor')
 
 exports.crearProveedor = async (req, res) => {
   try {
-    const proveedor = new Proveedor(req.body);
-    await proveedor.save();
+    const proveedor = new Proveedor(req.body)
+    await proveedor.save()
     res.status(200).send(proveedor)
   } catch (error) {
-    console.error(error);
+    console.error(error)
     res.status(500).send('Hubo un error al crear el proveedor')
   }
 }
@@ -29,8 +29,8 @@ exports.modificarProveedor = async (req, res) => {
     }
     res.json(proveedor)
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error al modificar el proveedor');
+    console.error(error)
+    res.status(500).send('Error al modificar el proveedor')
   }
 }
 
@@ -40,10 +40,10 @@ exports.buscarProveedor = async (req, res) => {
     if (proveedor) {
       res.json(proveedor)
     } else {
-      res.status(404).json({ msg: "Proveedor no encontrado" })
+      res.status(404).json({ msg: 'Proveedor no encontrado' })
     }
   } catch (error) {
-    res.status(500).json({ msg: "Hubo un error al buscar el proveedor" });
+    res.status(500).json({ msg: 'Hubo un error al buscar el proveedor' })
   }
 }
 
@@ -54,7 +54,7 @@ exports.eliminarProveedor = async (req, res) => {
       res.status(404).send('No ha podido encontrarse el proveedor')
     } else {
       await Proveedor.findOneAndDelete({ _id: req.params.id })
-      res.json({ msg: 'El cliente ha sido eliminado' });
+      res.json({ msg: 'El cliente ha sido eliminado' })
     }
   } catch (error) {
     console.error(error)
