@@ -11,9 +11,14 @@ import usuarioRoutes from '../routes/usuario.js'
 const app = express()
 const PORT = process.env.PORT || 5000
 
+const allowedOrigins = [
+  'https://front-end-talento-tech.vercel.app',
+  'http://localhost:5173'
+];
+
 // enlazar conexión a la base de datos
 ConectarBD()
-app.use(cors({ origin: 'front-end-talento-tech.vercel.app' || 'http://localhost:5173', credentials: true }))
+app.use(cors({ origin: allowedOrigins, credentials: true }))
 app.use(json())
 app.use(cookieParser())
 
