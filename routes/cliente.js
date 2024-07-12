@@ -1,13 +1,14 @@
-const express = require('express')
-const router = express.Router()
-const clienteController = require('../controllers/clienteController')
+import { Router } from 'express'
+import { agregarClientes, mostrarClientes, buscarCliente, actualizarClientes, eliminarClientes } from '../controllers/clienteController.js'
+import auth from '../middleware/authMiddleware.js'
+const router = Router()
 
 // Creamos la ruta del crud
-router.post('/', clienteController.agregarClientes)
-router.get('/', clienteController.mostrarClientes)
-router.get('/:id', clienteController.buscarCliente)
-router.put('/:id', clienteController.actualizarClientes)
+router.post('/', auth, agregarClientes)
+router.get('/', auth, mostrarClientes)
+router.get('/:id', auth, buscarCliente)
+router.put('/:id', auth, actualizarClientes)
 // router.patch('/:id', clienteController.modificarClientes);
-router.delete('/:id', clienteController.eliminarClientes)
+router.delete('/:id', auth, eliminarClientes)
 
-module.exports = router
+export default router

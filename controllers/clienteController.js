@@ -1,7 +1,7 @@
-const Cliente = require('../models/Cliente')
+import Cliente from '../models/Cliente.js'
 
 // Función agregar clientes
-exports.agregarClientes = async (req, res) => {
+export const agregarClientes = async (req, res) => {
   try {
     const clientes = new Cliente(req.body)
     await clientes.save()
@@ -13,7 +13,7 @@ exports.agregarClientes = async (req, res) => {
 }
 
 // Crear una función que nos va a mostrar todos los clientes
-exports.mostrarClientes = async (req, res) => {
+export const mostrarClientes = async (req, res) => {
   try {
     const clientes = await Cliente.find()
     res.json(clientes)
@@ -24,7 +24,7 @@ exports.mostrarClientes = async (req, res) => {
 }
 
 // Función para mostrar un cliente
-exports.buscarCliente = async (req, res) => {
+export const buscarCliente = async (req, res) => {
   try {
     const cliente = await Cliente.findById(req.params.id)
 
@@ -40,7 +40,7 @@ exports.buscarCliente = async (req, res) => {
 }
 
 // Función para actualizar un cliente
-exports.actualizarClientes = async (req, res) => {
+export const actualizarClientes = async (req, res) => {
   try {
     const cliente = await Cliente.findOneAndUpdate(
       { _id: req.params.id }, req.body)
@@ -56,7 +56,7 @@ exports.actualizarClientes = async (req, res) => {
 }
 
 // Función para modificar un cliente
-exports.modificarClientes = async (req, res) => {
+export const modificarClientes = async (req, res) => {
   try {
     const cliente = await Cliente.findByIdAndUpdate(req.params.id, req.body, { new: true })
     if (!cliente) {
@@ -70,7 +70,7 @@ exports.modificarClientes = async (req, res) => {
 }
 
 // Función para eliminar un cliente
-exports.eliminarClientes = async (req, res) => {
+export const eliminarClientes = async (req, res) => {
   try {
     const clientes = await Cliente.findById(req.params.id)
     if (!clientes) {

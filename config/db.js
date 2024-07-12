@@ -1,11 +1,11 @@
-const mongoose = require('mongoose')
-require('dotenv').config()
+import { connect } from 'mongoose'
+import dotenv from 'dotenv'
+dotenv.config()
 
 const ConectarBD = () => {
-  mongoose
-    .connect(process.env.MONGO_URL)
+  connect(process.env.MONGO_URL)
     .then(() => console.log('Estamos conectados con MongoDB'))
     .catch((e) => console.error(e))
 }
 
-module.exports = ConectarBD
+export default ConectarBD

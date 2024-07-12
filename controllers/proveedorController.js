@@ -1,6 +1,6 @@
-const Proveedor = require('../models/Proveedor')
+import Proveedor from '../models/Proveedor.js'
 
-exports.crearProveedor = async (req, res) => {
+export const crearProveedor = async (req, res) => {
   try {
     const proveedor = new Proveedor(req.body)
     await proveedor.save()
@@ -11,7 +11,7 @@ exports.crearProveedor = async (req, res) => {
   }
 }
 
-exports.mostrarProveedor = async (req, res) => {
+export const mostrarProveedor = async (req, res) => {
   try {
     const proveedores = await Proveedor.find()
     res.json(proveedores)
@@ -21,7 +21,7 @@ exports.mostrarProveedor = async (req, res) => {
   }
 }
 
-exports.modificarProveedor = async (req, res) => {
+export const modificarProveedor = async (req, res) => {
   try {
     const proveedor = await Proveedor.findByIdAndUpdate(req.params.id, req.body, { new: true })
     if (!proveedor) {
@@ -34,7 +34,7 @@ exports.modificarProveedor = async (req, res) => {
   }
 }
 
-exports.buscarProveedor = async (req, res) => {
+export const buscarProveedor = async (req, res) => {
   try {
     const proveedor = await Proveedor.findById(req.params.id)
     if (proveedor) {
@@ -47,7 +47,7 @@ exports.buscarProveedor = async (req, res) => {
   }
 }
 
-exports.eliminarProveedor = async (req, res) => {
+export const eliminarProveedor = async (req, res) => {
   try {
     const proveedores = Proveedor.findById(req.params.id)
     if (!proveedores) {

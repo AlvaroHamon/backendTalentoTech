@@ -1,6 +1,6 @@
-const mongoose = require('mongoose')
+import { Schema, model } from 'mongoose'
 
-const ProveedorSchema = mongoose.Schema({
+const ProveedorSchema = Schema({
 
   razonSocial: {
     type: String,
@@ -25,4 +25,4 @@ const ProveedorSchema = mongoose.Schema({
   }
 }, { versionkey: false })
 
-module.exports = mongoose.model('Proveedor', ProveedorSchema)
+export default model('Proveedor', ProveedorSchema)

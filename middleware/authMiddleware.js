@@ -1,15 +1,18 @@
-const jwt = require('jsonwebtoken')
+import jwt from 'jsonwebtoken'
+// import Usuario from '../models/Usuario.js'
 
-module.exports = function (req, res, next) {
-  const token = req.header('x-auth-token')
-  if (!token) {
-    return res.status(401).json({ msg: 'No hay token, autorización denegada' })
-  }
+const auth = async (req, res, next) => {
+  const token = req.cookies.token
+
+  if (!token) { res.status(401).json({ msg: 'No hay token, autorización denegada' }) }
+
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET)
-    req.user = decoded.user
+    req.user = decoded.id
     next()
-  } catch (err) {
-    res.status(401).json({ msg: 'Token no es válido' })
+  } catch (error) {
+    res.status(401).json({ msg: 'El Token no es válido' })
   }
 }
+
+export default auth

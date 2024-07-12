@@ -1,20 +1,28 @@
-const express = require('express')
-const ConectarBD = require('../config/db')
-const cors = require('cors')
+import express, { json } from 'express'
+import ConectarBD from '../config/db.js'
+import cors from 'cors'
+import cookieParser from 'cookie-parser'
+
+// importamos las rutas
+import clientesRoutes from '../routes/cliente.js'
+import proveedorRoutes from '../routes/proveedor.js'
+import usuarioRoutes from '../routes/usuario.js'
 
 const app = express()
 const PORT = process.env.PORT || 5000
 
 // enlazar conexión a la base de datos
 ConectarBD()
-app.use(cors())
-app.use(express.json())
-app.use('/api/clientes', require('../routes/cliente'))
-app.use('/api/proveedores', require('../routes/proveedor'))
-app.use('/api/auth', require('../routes/usuario'))
+app.use(cors({ origin: 'http://localhost:5173', credentials: true }))
+app.use(json())
+app.use(cookieParser())
+
+app.use('/api/clientes', clientesRoutes)
+app.use('/api/proveedores', proveedorRoutes)
+app.use('/api/auth', usuarioRoutes)
 
 app.get('/', (req, res) => {
-  res.send('Bienvenido estamos desde el servidor')
+  res.send('<h1>Bienvenido estamos desde el servidor</h1>')
 })
 
-app.listen(PORT, () => console.log('Estamos conectados con el servidor en el puerto: ', PORT))
+app.listen(PORT, () => console.log(`Estamos conectados con el servidor en el puerto: ${PORT}`))

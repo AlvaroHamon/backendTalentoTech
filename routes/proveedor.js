@@ -1,12 +1,13 @@
-const express = require('express')
-const router = express.Router()
-const proveedorController = require('../controllers/proveedorController')
+import { Router } from 'express'
+import { crearProveedor, mostrarProveedor, modificarProveedor, buscarProveedor, eliminarProveedor } from '../controllers/proveedorController.js'
+import auth from '../middleware/authMiddleware.js'
+const router = Router()
 
 //  creamos rutas del CRUD
-router.post('/', proveedorController.crearProveedor)
-router.get('/', proveedorController.mostrarProveedor)
-router.put('/:id', proveedorController.modificarProveedor)
-router.get('/:id', proveedorController.buscarProveedor)
-router.delete('/:id', proveedorController.eliminarProveedor)
+router.post('/', auth, crearProveedor)
+router.get('/', auth, mostrarProveedor)
+router.put('/:id', auth, modificarProveedor)
+router.get('/:id', auth, buscarProveedor)
+router.delete('/:id', auth, eliminarProveedor)
 
-module.exports = router
+export default router
