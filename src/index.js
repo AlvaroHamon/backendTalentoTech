@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 5000
 
 // enlazar conexión a la base de datos
 ConectarBD()
-app.use(cors({ origin: 'http://localhost:5173' || 'front-end-talento-tech.vercel.app', credentials: true }))
+app.use(cors({ origin: 'front-end-talento-tech.vercel.app' || 'http://localhost:5173', credentials: true }))
 app.use(json())
 app.use(cookieParser())
 
