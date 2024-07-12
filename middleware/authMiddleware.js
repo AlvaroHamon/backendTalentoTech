@@ -4,14 +4,16 @@ import jwt from 'jsonwebtoken'
 const auth = async (req, res, next) => {
   const token = req.cookies.token
 
-  if (!token) { res.status(401).json({ msg: 'No hay token, autorización denegada' }) }
+  if (!token) {
+    return res.status(401).json({ msg: 'No hay token, autorización denegada' })
+  }
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET)
     req.user = decoded.id
     next()
   } catch (error) {
-    res.status(401).json({ msg: 'El Token no es válido' })
+    return res.status(401).json({ msg: 'El Token no es válido' })
   }
 }
 

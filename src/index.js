@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 5000
 const allowedOrigins = [
   'https://front-end-talento-tech.vercel.app',
   'http://localhost:5173'
-];
+]
 
 // enlazar conexión a la base de datos
 ConectarBD()
