@@ -8,7 +8,7 @@ router.post('/', auth, agregarClientes)
 router.get('/', auth, mostrarClientes)
 router.get('/:id', auth, buscarCliente)
 router.put('/:id', auth, actualizarClientes)
-// router.patch('/:id', clienteController.modificarClientes);
+// router.patch('/:id', auth, modificarClientes);
 router.delete('/:id', auth, eliminarClientes)
 
 export default router

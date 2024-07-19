@@ -3,8 +3,8 @@ import bcryptjs from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 
 // función para generar el token
-const generarJWT = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
+const generarJWT = (id, usuario) => {
+  return jwt.sign({ id, usuario }, process.env.JWT_SECRET, {
     expiresIn: '1h'
   })
 }
@@ -36,7 +36,7 @@ export const register = async (req, res) => {
     const salt = await bcryptjs.genSalt(10)
     user.password = await bcryptjs.hash(password, salt)
     await user.save()
-    const token = await generarJWT(user.id)
+    const token = await generarJWT(user.id, user.usuario)
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV !== 'development',
@@ -61,13 +61,13 @@ export const login = async (req, res) => {
     const isMatch = await bcryptjs.compare(password, user.password)
     if (!isMatch) { return res.status(400).json({ msg: 'La contraseña es incorrecta' }) }
 
-    const token = await generarJWT(user.id)
+    const token = await generarJWT(user.id, user.usuario)
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV !== 'development',
       sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax'
     })
-    res.json({ msg: 'Inicio de sesión exitoso' })
+    res.json({ msg: 'Inicio de sesión exitoso', token })
   } catch (error) {
     console.log(error)
     res.status(500).json({ msg: 'Hubo un error al iniciar sesión' })
@@ -76,17 +76,27 @@ export const login = async (req, res) => {
 
 // Cerrar Sesión
 export const logout = (req, res) => {
-  res.cookie('token', '', { httpOnly: true, expires: new Date(0) })
+  res.cookie('token', '', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV !== 'development',
+    sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
+    expires: new Date(0)
+  })
+  res.set('Cache-Control', 'no-store')
   res.json({ msg: 'Sesión cerrada correctamente' })
 }
 
 // Obtener usuario autenticado
 export const getUser = async (req, res) => {
   try {
-    const user = await Usuario.findById(req.user.id).select('-password')
-    res.json(user)
+    const usuario = await Usuario.findById(req.user.id).select('-password')
+    if (!usuario) {
+      return res.status(400).json({ msg: 'No existe un usuario con ese ID' })
+    }
+
+    res.json({ id: usuario.id, usuario: usuario.usuario })
   } catch (error) {
-    console.log(error)
+    console.log('Error al obtener el usuario:')
     res.status(500).json({ msg: 'Hubo un error al obtener el usuario' })
   }
 }
