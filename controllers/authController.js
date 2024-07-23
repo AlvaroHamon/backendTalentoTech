@@ -36,11 +36,11 @@ export const register = async (req, res) => {
     const salt = await bcryptjs.genSalt(10)
     user.password = await bcryptjs.hash(password, salt)
     await user.save()
-    const token = await generarJWT(user.id, user.usuario)
+    const token = generarJWT(user.id, user.usuario)
     res.cookie('token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV !== 'development',
-      sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax'
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
     })
 
     res.status(200).json({ msg: 'Usuario creado exitosamente' })
@@ -61,12 +61,12 @@ export const login = async (req, res) => {
     const isMatch = await bcryptjs.compare(password, user.password)
     if (!isMatch) { return res.status(400).json({ msg: 'La contraseña es incorrecta' }) }
 
-    const token = await generarJWT(user.id, user.usuario)
+    const token = generarJWT(user.id, user.usuario)
 
     res.cookie('token', token, {
       httpOnly: true,
-      secure: false,
-      sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax'
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
     })
 
     res.json({ msg: 'Inicio de sesión exitoso' })
@@ -80,8 +80,8 @@ export const login = async (req, res) => {
 export const logout = (req, res) => {
   res.cookie('token', '', {
     httpOnly: true,
-    secure: false,
-    sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
     expires: new Date(0)
   })
   res.set('Cache-Control', 'no-store')
