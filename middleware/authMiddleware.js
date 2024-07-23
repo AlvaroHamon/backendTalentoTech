@@ -9,11 +9,10 @@ const auth = (req, res, next) => {
 
   try {
     const data = jwt.verify(token, process.env.JWT_SECRET)
-
     req.user = data
     next()
   } catch (error) {
-    console.log('Token invalido:', error)
+    console.log('Token inválido:', error)
     res.status(401).json({ msg: 'Token inválido' })
   }
 }

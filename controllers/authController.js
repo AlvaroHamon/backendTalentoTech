@@ -56,19 +56,20 @@ export const login = async (req, res) => {
 
   try {
     const user = await Usuario.findOne({ usuario })
-    if (!user.usuario) { return res.status(400).json({ msg: 'El usuario no existe' }) }
+    if (!user) { return res.status(400).json({ msg: 'El usuario no existe' }) }
 
     const isMatch = await bcryptjs.compare(password, user.password)
     if (!isMatch) { return res.status(400).json({ msg: 'La contraseña es incorrecta' }) }
 
     const token = await generarJWT(user.id, user.usuario)
+
     res.cookie('token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV !== 'development',
-      // sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax'
-      sameSite: 'none'
+      secure: false,
+      sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax'
     })
-    res.json({ msg: 'Inicio de sesión exitoso', token })
+
+    res.json({ msg: 'Inicio de sesión exitoso' })
   } catch (error) {
     console.log(error)
     res.status(500).json({ msg: 'Hubo un error al iniciar sesión' })
@@ -79,7 +80,7 @@ export const login = async (req, res) => {
 export const logout = (req, res) => {
   res.cookie('token', '', {
     httpOnly: true,
-    secure: process.env.NODE_ENV !== 'development',
+    secure: false,
     sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
     expires: new Date(0)
   })
